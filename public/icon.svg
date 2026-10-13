@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14b8a6"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#grad)"/>
+  <!-- Graduation Cap & Stopwatch Symbol -->
+  <path d="M64 28 L24 48 L64 68 L104 48 Z" fill="#ffffff" opacity="0.95"/>
+  <path d="M40 57 L40 82 C40 94 88 94 88 82 L88 57" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="64" cy="80" r="16" fill="#0f172a" opacity="0.3"/>
+  <circle cx="64" cy="80" r="14" fill="none" stroke="#ffffff" stroke-width="4"/>
+  <path d="M64 72 L64 80 L70 84" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+</svg>
