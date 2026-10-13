@@ -13,7 +13,7 @@ O programa já está compilado e com o servidor pronto.
 # Na pasta do projeto:
 npm start
 ```
-Abra o navegador em: **`http://localhost:3001`**
+Abra o navegador em: **`https://concursei-ten.vercel.app/`**
 
 ### Modo Desenvolvimento (Hot-reload Vite + Node watch):
 ```powershell
