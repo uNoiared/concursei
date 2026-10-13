@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/concursos/detalhe",
+      "destination": "/api/detalhe.js"
+    },
+    {
+      "source": "/api/concursos/auto-edital",
+      "destination": "/api/auto-edital.js"
+    },
+    {
+      "source": "/api/concursos",
+      "destination": "/api/concursos.js"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

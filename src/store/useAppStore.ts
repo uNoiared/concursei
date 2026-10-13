@@ -4,6 +4,7 @@ import { Concurso, ConcursoAberto, DB, Materia, ModoTimer, Plano, RegistroQuesto
 import { deleteRow, loadLocalDB, salvarGradeCompleta, subscribeData, upsertRow, limparDesempenhoStorage } from '../lib/storage.ts';
 import { gerarDisciplinasETopicosPadrao } from '../lib/editaisPadrao.ts';
 import { sanitizarNomeConcurso } from '../lib/sanitizeConcurso.ts';
+import { CONCURSOS_INICIAIS } from '../lib/concursosIniciais.ts';
 import { sounds } from '../lib/audio.ts';
 
 export type Tela = 'concursos_abertos' | 'meus_estudos' | 'concurso_detalhe' | 'cronometro' | 'estatisticas';
@@ -188,19 +189,32 @@ export const useAppStore = create<AppStore>((set, get) => {
     db: dbInicial,
     recarregarDb: () => set({ db: loadLocalDB() }),
 
-    concursosAbertos: [],
+    concursosAbertos: CONCURSOS_INICIAIS,
     carregandoConcursos: false,
     erroConcursos: null,
     carregarConcursosAbertos: async (force = false) => {
       set({ carregandoConcursos: true, erroConcursos: null });
       try {
         const res = await fetch(`/api/concursos${force ? '?refresh=1' : ''}`);
-        if (!res.ok) throw new Error(`Falha na resposta do servidor: HTTP ${res.status}`);
-        const data = await res.json();
-        set({ concursosAbertos: data.concursos || [], carregandoConcursos: false });
+        const contentType = res.headers.get('content-type') || '';
+        if (res.ok && contentType.includes('application/json')) {
+          const data = await res.json();
+          if (data && Array.isArray(data.concursos) && data.concursos.length > 0) {
+            set({ concursosAbertos: data.concursos, carregandoConcursos: false });
+            return;
+          }
+        }
+        // Fallback seguro se o backend não for uma API JSON
+        set((s) => ({
+          concursosAbertos: s.concursosAbertos.length > 0 ? s.concursosAbertos : CONCURSOS_INICIAIS,
+          carregandoConcursos: false,
+        }));
       } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err);
-        set({ erroConcursos: msg, carregandoConcursos: false });
+        // Modo offline / estático seguro: mantém os concursos existentes
+        set((s) => ({
+          concursosAbertos: s.concursosAbertos.length > 0 ? s.concursosAbertos : CONCURSOS_INICIAIS,
+          carregandoConcursos: false,
+        }));
       }
     },
 

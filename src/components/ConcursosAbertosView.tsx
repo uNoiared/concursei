@@ -60,12 +60,15 @@ export const ConcursosAbertosView: React.FC = () => {
   const [detalheCarregando, setDetalheCarregando] = useState(false);
   const [detalhesNoticia, setDetalhesNoticia] = useState<{ paragrafos: string[]; links: { href: string; texto: string; pdf: boolean }[] } | null>(null);
 
-  // Carrega na montagem se ainda não tiver
+  const jaTentouCarregarRef = React.useRef(false);
+
+  // Sincroniza com a API uma única vez na montagem
   useEffect(() => {
-    if (concursosAbertos.length === 0 && !carregandoConcursos) {
+    if (!jaTentouCarregarRef.current) {
+      jaTentouCarregarRef.current = true;
       carregarConcursosAbertos();
     }
-  }, [concursosAbertos.length, carregandoConcursos, carregarConcursosAbertos]);
+  }, [carregarConcursosAbertos]);
 
   // Carrega detalhes da notícia ao abrir o modal
   const abrirDetalhes = async (c: ConcursoAberto) => {
